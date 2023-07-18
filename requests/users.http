@@ -1,0 +1,12 @@
+@host=http://localhost:8080
+@baseUrl=/api/v1
+
+POST {{host}}{{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "first_name": "rouzbeh",
+    "last_name": "sabzehei",
+    "email": "rouzbehsbz@gmail.com",
+    "password": "test@1234"
+}
