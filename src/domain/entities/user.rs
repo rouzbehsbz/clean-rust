@@ -2,7 +2,7 @@ use bcrypt::{hash, verify};
 use serde::{Deserialize, Serialize};
 use tokio::task;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
     pub id: i32,
     pub first_name: String,
@@ -12,7 +12,7 @@ pub struct User {
 }
 
 impl User {
-    pub async fn new(
+    pub fn new(
         id: i32,
         first_name: &str,
         last_name: &str,
@@ -27,7 +27,7 @@ impl User {
             password: password.to_string(),
         };
 
-        user.hash_password().await;
+        // user.hash_password().await;
 
         user
     }

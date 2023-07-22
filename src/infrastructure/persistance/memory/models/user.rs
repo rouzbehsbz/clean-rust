@@ -3,6 +3,7 @@ use crate::{
     common::types::AppResult, domain::entities::user::User,
     infrastructure::persistance::memory::Memory,
 };
+use async_trait::async_trait;
 
 pub struct UserModel {
     source: Memory<String, User>,
@@ -16,17 +17,18 @@ impl UserModel {
     }
 }
 
+#[async_trait]
 impl IUserRepository for UserModel {
     // TODO: implement more effecient way
-    async fn create(&mut self, user: &User) -> AppResult<()> {
+    async fn create(&self, user: &User) -> AppResult<()> {
         let owned_user = User::new(
             user.id,
             &user.first_name,
             &user.last_name,
             &user.email,
             &user.password,
-        )
-        .await;
+        );
+        // .await;
 
         self.source.add(owned_user.email.to_string(), owned_user);
 
@@ -34,7 +36,7 @@ impl IUserRepository for UserModel {
     }
 
     // TODO: implement more effecient way
-    async fn find_by_email(&mut self, email: &str) -> AppResult<Option<User>> {
+    async fn find_by_email(&self, email: &str) -> AppResult<Option<User>> {
         let found_user = self.source.get(&email.to_string());
 
         match found_user {
@@ -46,7 +48,7 @@ impl IUserRepository for UserModel {
                     &user.email,
                     &user.password,
                 )
-                .await,
+                // .await,
             )),
             None => Ok(None),
         }

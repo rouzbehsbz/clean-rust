@@ -4,6 +4,7 @@ use crate::{
 };
 use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
+use async_trait::async_trait;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct JwtPayload {
@@ -22,6 +23,7 @@ impl JwtTokenHandler {
     }
 }
 
+#[async_trait]
 impl IJwtTokenHandler for JwtTokenHandler {
     async fn generate_token(&self, user: &User) -> String {
         let payload = JwtPayload { user_id: user.id };

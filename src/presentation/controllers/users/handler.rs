@@ -1,12 +1,12 @@
-use actix_web::web::Json;
+use actix_web::web::{Json, Data};
 
-use crate::application::usecases::user::{dto::UserRegisterInput, interface::IUserService};
+use crate::{application::usecases::user::{dto::UserRegisterInput, interface::IUserService, service::UserService}, infrastructure::{authentication::jwt_token_handler::JwtTokenHandler, persistance::memory::models::user::UserModel}};
 
 use super::dto::{AuthenticatedUserResponse, UserRegisterRequest};
 
 // TODO: make it more effecient
-pub async fn register<T: IUserService>(
-    mut user_service: T,
+pub async fn register(
+    user_service: Data<dyn IUserService>,
     payload: Json<UserRegisterRequest>,
 ) -> Json<AuthenticatedUserResponse> {
     let result = user_service

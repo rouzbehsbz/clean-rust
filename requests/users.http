@@ -5,8 +5,8 @@ POST {{host}}{{baseUrl}}/users
 Content-Type: application/json
 
 {
-    "first_name": "rouzbeh",
+    "first_name": "rouzbehsbz",
     "last_name": "sabzehei",
-    "email": "rouzbehsbz@gmail.com",
+    "email": "rouzbehsbz1@gmail.com",
     "password": "test@1234"
 }

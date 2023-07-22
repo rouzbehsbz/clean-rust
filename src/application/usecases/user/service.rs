@@ -10,6 +10,7 @@ use crate::{
     common::{errors::Error, types::AppResult},
     domain::entities::user::User,
 };
+use async_trait::async_trait;
 
 pub struct UserService<T, K>
 where
@@ -33,13 +34,14 @@ where
     }
 }
 
+#[async_trait]
 impl<T, K> IUserService for UserService<T, K>
 where
     T: IJwtTokenHandler,
     K: IUserRepository,
 {
     // TODO: better error handling
-    async fn login(&mut self, input: &UserLoginInput) -> AppResult<AuthenticatedUserOutput> {
+    async fn login(&self, input: &UserLoginInput) -> AppResult<AuthenticatedUserOutput> {
         let found_user: Option<User> = self.user_repository.find_by_email(&input.email).await?;
 
         match found_user {
@@ -54,9 +56,9 @@ where
         }
     }
 
-    async fn register(&mut self, input: &UserRegisterInput) -> AppResult<AuthenticatedUserOutput> {
+    async fn register(&self, input: &UserRegisterInput) -> AppResult<AuthenticatedUserOutput> {
         let found_user = self.user_repository.find_by_email(&input.email).await?;
-
+        
         match found_user {
             Some(_) => Err(Error::InternalServerError),
             None => {
@@ -66,13 +68,12 @@ where
                     &input.last_name,
                     &input.email,
                     &input.password,
-                )
-                .await;
-
+                );
+                // .await;
                 self.user_repository.create(&new_user).await?;
-
+                
                 let access_token = self.jwt_token_handler.generate_token(&new_user).await;
-
+                
                 Ok(AuthenticatedUserOutput {
                     user: new_user,
                     access_token,
