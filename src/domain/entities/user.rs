@@ -4,7 +4,7 @@ use tokio::task;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
-    pub id: i32,
+    pub id: u32,
     pub first_name: String,
     pub last_name: String,
     pub email: String,
@@ -12,24 +12,27 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(
-        id: i32,
+    pub async fn new(
         first_name: &str,
         last_name: &str,
         email: &str,
         password: &str,
     ) -> Self {
         let mut user = Self {
-            id,
+            id: 0,
             first_name: first_name.to_string(),
             last_name: last_name.to_string(),
             email: email.to_string(),
             password: password.to_string(),
         };
 
-        // user.hash_password().await;
+        user.hash_password().await;
 
         user
+    }
+
+    pub fn set_id(&mut self, id: u32) {
+        self.id = id;
     }
 
     //TODO: better error handling

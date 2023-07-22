@@ -1,6 +1,8 @@
 pub mod models;
 
-use std::{collections::HashMap, hash::Hash, sync::RwLock};
+use std::{collections::HashMap, hash::Hash};
+
+use tokio::sync::RwLock;
 
 // TODO: check wethear tokio RwLock is better here
 pub struct Memory<K, V>
@@ -22,21 +24,21 @@ where
         }
     }
 
-    pub fn add(&self, key: K, value: V) {
-        let mut writer = self.items.write().unwrap();
+    pub async fn add(&self, key: K, value: V) {
+        let mut writer = self.items.write().await;
 
         writer.insert(key, value);
     }
 
-    pub fn remove(&self, key: K) {
-        let mut writer = self.items.write().unwrap();
+    pub async fn remove(&self, key: K) {
+        let mut writer = self.items.write().await;
 
 
         writer.remove(&key);
     }
 
-    pub fn get(&self, key: &K) -> Option<V> {
-        let reader = self.items.read().unwrap();
+    pub async fn get(&self, key: &K) -> Option<V> {
+        let reader = self.items.read().await;
          
         match reader.get(key) {
             Some(value) => Some(value.to_owned()),

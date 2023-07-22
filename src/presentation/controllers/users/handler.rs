@@ -1,6 +1,6 @@
 use actix_web::web::{Json, Data};
 
-use crate::{application::usecases::user::{dto::UserRegisterInput, interface::IUserService, service::UserService}, infrastructure::{authentication::jwt_token_handler::JwtTokenHandler, persistance::memory::models::user::UserModel}};
+use crate::{application::usecases::user::{dto::UserRegisterInput, interface::IUserService, service::UserService}, infrastructure::{authentication::jwt_token_handler::JwtTokenHandler, persistance::memory::models::user::UserModel}, common::types::AppResult};
 
 use super::dto::{AuthenticatedUserResponse, UserRegisterRequest};
 
@@ -8,7 +8,7 @@ use super::dto::{AuthenticatedUserResponse, UserRegisterRequest};
 pub async fn register(
     user_service: Data<dyn IUserService>,
     payload: Json<UserRegisterRequest>,
-) -> Json<AuthenticatedUserResponse> {
+) -> AppResult<Json<AuthenticatedUserResponse>> {
     let result = user_service
         .register(&UserRegisterInput {
             email: payload.email.clone(),
@@ -16,14 +16,13 @@ pub async fn register(
             last_name: payload.last_name.clone(),
             password: payload.password.clone(),
         })
-        .await
-        .unwrap();
+        .await?;
 
-    Json(AuthenticatedUserResponse {
+    Ok(Json(AuthenticatedUserResponse {
         id: result.user.id,
         first_name: result.user.first_name,
         last_name: result.user.last_name,
         email: result.user.email,
         access_token: result.access_token,
-    })
+    }))
 }

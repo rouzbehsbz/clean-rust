@@ -8,7 +8,7 @@ use async_trait::async_trait;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct JwtPayload {
-    user_id: i32,
+    user_id: u32,
 }
 
 pub struct JwtTokenHandler {
