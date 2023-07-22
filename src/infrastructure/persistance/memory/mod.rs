@@ -4,11 +4,10 @@ use std::{collections::HashMap, hash::Hash};
 
 use tokio::sync::RwLock;
 
-// TODO: check wethear tokio RwLock is better here
 pub struct Memory<K, V>
 where
     K: Eq + PartialEq + Hash,
-    V: Clone
+    V: Clone,
 {
     items: RwLock<HashMap<K, V>>,
 }
@@ -16,7 +15,7 @@ where
 impl<K, V> Memory<K, V>
 where
     K: Eq + PartialEq + Hash,
-    V: Clone
+    V: Clone,
 {
     pub fn new() -> Self {
         Self {
@@ -33,16 +32,15 @@ where
     pub async fn remove(&self, key: K) {
         let mut writer = self.items.write().await;
 
-
         writer.remove(&key);
     }
 
     pub async fn get(&self, key: &K) -> Option<V> {
         let reader = self.items.read().await;
-         
+
         match reader.get(key) {
             Some(value) => Some(value.to_owned()),
-            None => None
+            None => None,
         }
     }
 }

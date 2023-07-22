@@ -1,6 +1,16 @@
-use actix_web::web::{Json, Data};
+use actix_web::web::{Data, Json};
+use validator::Validate;
 
-use crate::{application::usecases::user::{dto::UserRegisterInput, interface::IUserService, service::UserService}, infrastructure::{authentication::jwt_token_handler::JwtTokenHandler, persistance::memory::models::user::UserModel}, common::types::AppResult};
+use crate::{
+    application::usecases::user::{
+        dto::UserRegisterInput, interface::IUserService, service::UserService,
+    },
+    common::types::AppResult,
+    infrastructure::{
+        authentication::jwt_token_handler::JwtTokenHandler,
+        persistance::memory::models::user::UserModel,
+    },
+};
 
 use super::dto::{AuthenticatedUserResponse, UserRegisterRequest};
 
@@ -9,6 +19,8 @@ pub async fn register(
     user_service: Data<dyn IUserService>,
     payload: Json<UserRegisterRequest>,
 ) -> AppResult<Json<AuthenticatedUserResponse>> {
+    payload.validate()?;
+
     let result = user_service
         .register(&UserRegisterInput {
             email: payload.email.clone(),

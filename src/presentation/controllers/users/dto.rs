@@ -1,16 +1,41 @@
 use serde::{Deserialize, Serialize};
+use validator::Validate;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Validate)]
 pub struct UserLoginRequest {
+    #[validate(email(message = "Email address is not valid."))]
     pub email: String,
+
+    #[validate(length(
+        min = 8,
+        message = "Password is not valid. It should be at least 8 characters."
+    ))]
     pub password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Validate)]
 pub struct UserRegisterRequest {
+    #[validate(length(
+        min = 3,
+        max = 20,
+        message = "First name is not valid. It should be between 3 and 20 characters."
+    ))]
     pub first_name: String,
+
+    #[validate(length(
+        min = 3,
+        max = 20,
+        message = "First name is not valid. It should be between 3 and 20 characters."
+    ))]
     pub last_name: String,
+
+    #[validate(email(message = "Email address is not valid."))]
     pub email: String,
+
+    #[validate(length(
+        min = 8,
+        message = "Password is not valid. It should be at least 8 characters."
+    ))]
     pub password: String,
 }
 
