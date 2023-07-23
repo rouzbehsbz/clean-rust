@@ -3,9 +3,11 @@ use validator::Validate;
 
 #[derive(Debug, Serialize, Deserialize, Validate)]
 pub struct UserLoginRequest {
+    #[serde(default)]
     #[validate(email(message = "Email address is not valid."))]
     pub email: String,
 
+    #[serde(default)]
     #[validate(length(
         min = 8,
         message = "Password is not valid. It should be at least 8 characters."
@@ -15,6 +17,7 @@ pub struct UserLoginRequest {
 
 #[derive(Debug, Serialize, Deserialize, Validate)]
 pub struct UserRegisterRequest {
+    #[serde(default)]
     #[validate(length(
         min = 3,
         max = 20,
@@ -22,6 +25,7 @@ pub struct UserRegisterRequest {
     ))]
     pub first_name: String,
 
+    #[serde(default)]
     #[validate(length(
         min = 3,
         max = 20,
@@ -29,9 +33,11 @@ pub struct UserRegisterRequest {
     ))]
     pub last_name: String,
 
+    #[serde(default)]
     #[validate(email(message = "Email address is not valid."))]
     pub email: String,
 
+    #[serde(default)]
     #[validate(length(
         min = 8,
         message = "Password is not valid. It should be at least 8 characters."

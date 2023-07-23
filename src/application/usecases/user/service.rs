@@ -49,9 +49,13 @@ where
                     let access_token = self.jwt_token_handler.generate_token(&user).await;
                     Ok(AuthenticatedUserOutput { user, access_token })
                 }
-                false => Err(Error::InternalServerError),
+                false => Err(Error::EntityValidationFailed(format!(
+                    "Email or password is incorrect."
+                ))),
             },
-            None => Err(Error::InternalServerError),
+            None => Err(Error::EntityValidationFailed(format!(
+                "Email or password is incorrect."
+            ))),
         }
     }
 
@@ -59,7 +63,9 @@ where
         let found_user = self.user_repository.find_by_email(&input.email).await?;
 
         match found_user {
-            Some(_) => Err(Error::EntityExists(format!("This email is already taken."))),
+            Some(_) => Err(Error::EntityExists(format!(
+                "This email has already been taken."
+            ))),
             None => {
                 let new_user = User::new(
                     &input.first_name,
