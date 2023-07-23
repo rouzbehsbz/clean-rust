@@ -25,16 +25,9 @@ impl IUserRepository for UserModel {
     // TODO: implement more effecient way
     async fn create(&self, user: &User) -> AppResult<User> {
         let mut counter = self.id_counter.lock().await;
+        let mut owned_user = user.clone();
 
         *counter += 1;
-
-        let mut owned_user = User::new(
-            &user.first_name,
-            &user.last_name,
-            &user.email,
-            &user.password,
-        )
-        .await;
 
         owned_user.set_id(*counter);
 
@@ -50,15 +43,7 @@ impl IUserRepository for UserModel {
         let found_user = self.source.get(&email.to_string()).await;
 
         match found_user {
-            Some(user) => Ok(Some(
-                User::new(
-                    &user.first_name,
-                    &user.last_name,
-                    &user.email,
-                    &user.password,
-                )
-                .await,
-            )),
+            Some(user) => Ok(Some(user)),
             None => Ok(None),
         }
     }

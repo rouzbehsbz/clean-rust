@@ -1,3 +1,4 @@
+use domain::entities::user::User;
 use presentation::server::run;
 
 mod application;

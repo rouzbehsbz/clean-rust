@@ -6,6 +6,7 @@ use async_trait::async_trait;
 use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
 
+//TODO: add exp time to it
 #[derive(Debug, Serialize, Deserialize)]
 struct JwtPayload {
     user_id: u32,
