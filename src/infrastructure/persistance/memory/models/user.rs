@@ -38,7 +38,9 @@ impl IUserRepository for UserModel {
 
         owned_user.set_id(*counter);
 
-        self.source.add(owned_user.email.to_string(), owned_user.to_owned()).await;
+        self.source
+            .add(owned_user.email.to_string(), owned_user.to_owned())
+            .await;
 
         Ok(owned_user)
     }

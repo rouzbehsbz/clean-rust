@@ -1,5 +1,5 @@
-use async_trait::async_trait;
 use crate::{common::types::AppResult, domain::entities::user::User};
+use async_trait::async_trait;
 
 #[async_trait]
 pub trait IUserRepository: Send + Sync {

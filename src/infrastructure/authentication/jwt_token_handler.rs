@@ -2,9 +2,9 @@ use crate::{
     application::common::interfaces::authentication::jwt_token_handler::IJwtTokenHandler,
     domain::entities::user::User,
 };
+use async_trait::async_trait;
 use jsonwebtoken::{encode, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
-use async_trait::async_trait;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct JwtPayload {

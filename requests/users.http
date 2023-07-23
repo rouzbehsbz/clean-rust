@@ -5,7 +5,7 @@ POST {{host}}{{baseUrl}}/users
 Content-Type: application/json
 
 {
-    "first_name": "1",
+    "firstname": "11212",
     "last_name": "sabzehei",
     "email": "password",
     "password": "password"

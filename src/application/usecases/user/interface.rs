@@ -1,5 +1,5 @@
-use async_trait::async_trait;
 use crate::common::types::AppResult;
+use async_trait::async_trait;
 
 use super::dto::{AuthenticatedUserOutput, UserLoginInput, UserRegisterInput};
 

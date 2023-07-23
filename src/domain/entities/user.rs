@@ -12,12 +12,7 @@ pub struct User {
 }
 
 impl User {
-    pub async fn new(
-        first_name: &str,
-        last_name: &str,
-        email: &str,
-        password: &str,
-    ) -> Self {
+    pub async fn new(first_name: &str, last_name: &str, email: &str, password: &str) -> Self {
         let mut user = Self {
             id: 0,
             first_name: first_name.to_string(),

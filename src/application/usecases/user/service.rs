@@ -40,7 +40,6 @@ where
     T: IJwtTokenHandler,
     K: IUserRepository,
 {
-    
     async fn login(&self, input: &UserLoginInput) -> AppResult<AuthenticatedUserOutput> {
         let found_user: Option<User> = self.user_repository.find_by_email(&input.email).await?;
 
@@ -58,7 +57,7 @@ where
 
     async fn register(&self, input: &UserRegisterInput) -> AppResult<AuthenticatedUserOutput> {
         let found_user = self.user_repository.find_by_email(&input.email).await?;
-        
+
         match found_user {
             Some(_) => Err(Error::EntityExists(format!("This email is already taken."))),
             None => {
@@ -69,11 +68,11 @@ where
                     &input.password,
                 )
                 .await;
-                
+
                 let creaetd_user = self.user_repository.create(&new_user).await?;
-                
+
                 let access_token = self.jwt_token_handler.generate_token(&new_user).await;
-                
+
                 Ok(AuthenticatedUserOutput {
                     user: creaetd_user,
                     access_token,
