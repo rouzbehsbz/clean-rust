@@ -58,3 +58,5 @@ pub async fn login(
         access_token: result.access_token,
     }))
 }
+
+pub async fn update_profile(user_service: Data<dyn IUserService>) {}

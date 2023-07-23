@@ -12,6 +12,7 @@ where
     items: RwLock<HashMap<K, V>>,
 }
 
+//TODO: make better argument typing (T, &T)
 impl<K, V> Memory<K, V>
 where
     K: Eq + PartialEq + Hash,
@@ -42,5 +43,13 @@ where
             Some(value) => Some(value.to_owned()),
             None => None,
         }
+    }
+
+    pub async fn get_all(&self) -> Vec<V> {
+        let reader = self.items.read().await;
+
+        let values: Vec<V> = reader.values().cloned().collect();
+
+        values
     }
 }

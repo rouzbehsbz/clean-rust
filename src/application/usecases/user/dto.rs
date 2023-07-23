@@ -21,3 +21,12 @@ pub struct AuthenticatedUserOutput {
     pub user: User,
     pub access_token: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UpdateUserPofileInput {
+    pub id: u32,
+    pub email: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub password: Option<String>,
+}

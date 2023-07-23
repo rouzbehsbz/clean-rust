@@ -1,5 +1,5 @@
 use super::{
-    dto::{AuthenticatedUserOutput, UserLoginInput, UserRegisterInput},
+    dto::{AuthenticatedUserOutput, UpdateUserPofileInput, UserLoginInput, UserRegisterInput},
     interface::IUserService,
 };
 use crate::{
@@ -84,6 +84,33 @@ where
                     access_token,
                 })
             }
+        }
+    }
+
+    async fn update_profile(&self, input: &UpdateUserPofileInput) -> AppResult<()> {
+        let found_user = self.user_repository.find_by_id(input.id).await?;
+
+        match found_user {
+            Some(mut user) => {
+                if let Some(email) = &input.email {
+                    user.email = email.to_owned();
+                }
+                if let Some(first_name) = &input.first_name {
+                    user.first_name = first_name.to_owned();
+                }
+                if let Some(last_name) = &input.last_name {
+                    user.last_name = last_name.to_owned();
+                }
+                if let Some(password) = &input.password {
+                    user.password = password.to_owned();
+                    user.hash_password().await;
+                }
+
+                self.user_repository.update(input.id, &user).await?;
+
+                Ok(())
+            }
+            None => Err(Error::EntityNotFound(format!("User does not exists."))),
         }
     }
 }
