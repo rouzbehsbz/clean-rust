@@ -29,7 +29,7 @@ pub struct UserRegisterRequest {
     #[validate(length(
         min = 3,
         max = 20,
-        message = "First name is not valid. It should be between 3 and 20 characters."
+        message = "Last name is not valid. It should be between 3 and 20 characters."
     ))]
     pub last_name: String,
 
@@ -43,6 +43,32 @@ pub struct UserRegisterRequest {
         message = "Password is not valid. It should be at least 8 characters."
     ))]
     pub password: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Validate)]
+pub struct UpdateProfileRequest {
+    #[validate(length(
+        min = 3,
+        max = 20,
+        message = "First name is not valid. It should be between 3 and 20 characters."
+    ))]
+    pub first_name: Option<String>,
+
+    #[validate(length(
+        min = 3,
+        max = 20,
+        message = "Last name is not valid. It should be between 3 and 20 characters."
+    ))]
+    pub last_name: Option<String>,
+
+    #[validate(email(message = "Email address is not valid."))]
+    pub email: Option<String>,
+
+    #[validate(length(
+        min = 8,
+        message = "Password is not valid. It should be at least 8 characters."
+    ))]
+    pub password: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

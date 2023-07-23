@@ -13,6 +13,7 @@ use super::dto::{AuthenticatedUserResponse, UserLoginRequest, UserRegisterReques
 
 // TODO: make payload validation automatic for handlers
 // TODO: make it more effecient
+// TODO: make global Http Response
 pub async fn register(
     user_service: Data<dyn IUserService>,
     payload: Json<UserRegisterRequest>,
