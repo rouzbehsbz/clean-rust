@@ -72,6 +72,11 @@ pub struct UpdateProfileRequest {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct UpdateProfileResponse {
+    pub message: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct AuthenticatedUserResponse {
     pub id: u32,
     pub first_name: String,

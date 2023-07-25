@@ -1,25 +1,20 @@
 use crate::{
-    application::common::interfaces::authentication::jwt_token_handler::IJwtTokenHandler,
-    domain::entities::user::User,
+    application::common::interfaces::authentication::jwt_token_handler::{IJwtTokenHandler, JwtPayload},
+    domain::entities::user::User, common::{types::AppResult, errors::Error, config::AuthenticationConfig},
 };
 use async_trait::async_trait;
-use jsonwebtoken::{encode, EncodingKey, Header};
-use serde::{Deserialize, Serialize};
+use jsonwebtoken::{encode, decode, DecodingKey, EncodingKey, Header, Validation};
 
-//TODO: add exp time to it
-#[derive(Debug, Serialize, Deserialize)]
-struct JwtPayload {
-    user_id: u32,
-}
-
+//TODO: handle this task async
+//TODO: handle error here
 pub struct JwtTokenHandler {
     secret: String,
 }
 
 impl JwtTokenHandler {
-    pub fn new(secret: &str) -> Self {
+    pub fn new() -> Self {
         Self {
-            secret: secret.to_string(),
+            secret: AuthenticationConfig::jwt_secret()
         }
     }
 }
@@ -29,7 +24,6 @@ impl IJwtTokenHandler for JwtTokenHandler {
     async fn generate_token(&self, user: &User) -> String {
         let payload = JwtPayload { user_id: user.id };
 
-        //TODO: handle error here
         let token = encode(
             &Header::default(),
             &payload,
@@ -38,5 +32,20 @@ impl IJwtTokenHandler for JwtTokenHandler {
         .unwrap();
 
         token
+    }
+
+    fn decode_token(&self, token: &str) -> AppResult<JwtPayload> {
+        let decoded_token = decode::<JwtPayload>(
+            token,
+            &DecodingKey::from_secret(self.secret.as_ref()),
+            &Validation::default()
+        );
+
+        match decoded_token {
+            Ok(value) => {
+                Ok(value.claims)
+            },
+            Err(_) => Err(Error::AuthorizationFailed(format!("Your access token is not valid. please login again.")))
+        }
     }
 }

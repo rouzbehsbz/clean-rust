@@ -1,7 +1,8 @@
 @host=http://localhost:8080
 @baseUrl=/api/v1
 
-POST {{host}}{{baseUrl}}/users
+PUT {{host}}{{baseUrl}}/users/test
+Authorization: asasasasas
 Content-Type: application/json
 
 {

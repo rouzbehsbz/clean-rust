@@ -1,15 +1,15 @@
-use actix_web::web::{Data, Json};
+use actix_web::{web::{Data, Json}, HttpRequest, HttpMessage, http};
 use validator::Validate;
 
 use crate::{
-    application::usecases::user::{
+    application::{usecases::user::{
         dto::{UserLoginInput, UserRegisterInput},
         interface::IUserService,
-    },
-    common::types::AppResult,
+    }, common::interfaces::authentication::jwt_token_handler::JwtPayload},
+    common::types::AppResult, presentation::middlewares::authentication::AuthenticationMiddleware,
 };
 
-use super::dto::{AuthenticatedUserResponse, UserLoginRequest, UserRegisterRequest};
+use super::dto::{AuthenticatedUserResponse, UserLoginRequest, UserRegisterRequest, UpdateProfileRequest, UpdateProfileResponse};
 
 // TODO: make payload validation automatic for handlers
 // TODO: make it more effecient
@@ -60,4 +60,13 @@ pub async fn login(
     }))
 }
 
-pub async fn update_profile(user_service: Data<dyn IUserService>) {}
+pub async fn update_profile(
+    _: AuthenticationMiddleware,
+    // user_service: Data<dyn IUserService>,
+    // payload: Json<UpdateProfileRequest>,
+    req: HttpRequest,
+) -> AppResult<Json<UpdateProfileResponse>>{
+    let message = req.extensions().get::<JwtPayload>().unwrap().user_id;
+
+    Ok(Json(UpdateProfileResponse { message: format!("Your user id is {}", message) }))
+}

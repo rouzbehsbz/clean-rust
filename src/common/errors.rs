@@ -19,6 +19,8 @@ pub enum Error {
     EntityValidationFailed(String),
     #[error("Input validation failed.")]
     InputValidation(Vec<FieldError>),
+    #[error("{0}")]
+    AuthorizationFailed(String)
 }
 
 impl ResponseError for Error {
@@ -29,6 +31,7 @@ impl ResponseError for Error {
             Self::EntityExists(_) => StatusCode::CONFLICT,
             Self::InputValidation(_) => StatusCode::CONFLICT,
             Self::EntityValidationFailed(_) => StatusCode::CONFLICT,
+            Self::AuthorizationFailed(_) => StatusCode::UNAUTHORIZED
         }
     }
 
