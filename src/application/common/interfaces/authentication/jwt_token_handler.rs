@@ -6,6 +6,7 @@ use serde::{Serialize, Deserialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JwtPayload {
     pub user_id: u32,
+    pub exp: u64
 }
 
 #[async_trait]
