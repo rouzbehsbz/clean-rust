@@ -1,5 +1,5 @@
 use super::{
-    dto::{AuthenticatedUserOutput, UpdateUserPofileInput, UserLoginInput, UserRegisterInput},
+    dto::{AuthenticatedUserOutput, UpdateUserPofileInput, UserLoginInput, UserRegisterInput, GetProfileInput, GetProfileOutput},
     interface::IUserService,
 };
 use crate::{
@@ -111,6 +111,21 @@ where
                 Ok(())
             }
             None => Err(Error::EntityNotFound(format!("User does not exists."))),
+        }
+    }
+
+    async fn get_profile(&self, input: &GetProfileInput) -> AppResult<GetProfileOutput> {
+        let found_user = self.user_repository.find_by_id(input.id).await?;
+
+        match found_user {
+            Some(user) => {
+                Ok(GetProfileOutput { 
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email 
+                })    
+            },
+            None => Err(Error::EntityNotFound(format!("User does not exists.")))
         }
     }
 }

@@ -71,6 +71,18 @@ pub struct UpdateProfileRequest {
     pub password: Option<String>,
 }
 
+
+//TODO: handle "cannot parse to u32" error
+#[derive(Debug, Serialize, Deserialize, Validate)]
+pub struct GetUserProfileParams {
+    #[validate(range(
+        min = 1,
+        max = 9999999,
+        message = "User ID is not valid. please enter a valid number."
+    ))]
+    pub user_id: u32
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateProfileResponse {
     pub message: String
@@ -83,4 +95,11 @@ pub struct AuthenticatedUserResponse {
     pub last_name: String,
     pub email: String,
     pub access_token: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GetUserProfileResponse {
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String
 }

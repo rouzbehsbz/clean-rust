@@ -1,6 +1,6 @@
 use actix_web::web::{self, ServiceConfig};
 
-use super::controllers::users::handler::{login, register, update_profile};
+use super::controllers::users::handler::{login, register, update_profile, get_profile};
 
 pub fn routes(cfg: &mut ServiceConfig) {
     cfg.service(
@@ -9,7 +9,8 @@ pub fn routes(cfg: &mut ServiceConfig) {
                 web::scope("/users")
                     .route("", web::post().to(register))
                     .route("/session", web::post().to(login))
-                    .route("/test", web::put().to(update_profile))
+                    .route("/my/profile", web::put().to(update_profile))
+                    .route("/{user_id}/profile", web::get().to(get_profile))
             ),
         ),
     );

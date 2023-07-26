@@ -2,12 +2,12 @@
 @baseUrl=/api/v1
 
 PUT {{host}}{{baseUrl}}/users/test
-Authorization: asasasasas
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjowLCJleHAiOjE2OTAzMzUyNjQzNTl9.6YfUygTlzVFC13HSGQGvuqzwLQFwzOgxOzp4rY-Dvy4
 Content-Type: application/json
 
 {
-    "firstname": "11212",
+    "first_name": "rouzbeh",
     "last_name": "sabzehei",
-    "email": "password",
-    "password": "password"
+    "email": "rouzbehsbz@gmail.com",
+    "password": ""
 }

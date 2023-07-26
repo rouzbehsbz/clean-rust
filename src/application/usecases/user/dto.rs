@@ -30,3 +30,15 @@ pub struct UpdateUserPofileInput {
     pub last_name: Option<String>,
     pub password: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GetProfileInput {
+    pub id: u32
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GetProfileOutput {
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String
+}
