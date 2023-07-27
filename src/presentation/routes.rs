@@ -1,6 +1,6 @@
 use actix_web::web::{self, ServiceConfig};
 
-use super::controllers::users::handler::{login, register, update_profile, get_profile};
+use super::controllers::{users::handler::{login, register, update_profile, get_profile}, _default::handler::route_not_found};
 
 pub fn routes(cfg: &mut ServiceConfig) {
     cfg.service(
@@ -13,5 +13,6 @@ pub fn routes(cfg: &mut ServiceConfig) {
                     .route("/{user_id}/profile", web::get().to(get_profile))
             ),
         ),
-    );
+    )
+    .default_service(web::route().to(route_not_found));
 }
