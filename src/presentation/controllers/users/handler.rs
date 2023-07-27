@@ -89,7 +89,7 @@ pub async fn update_profile(
     }).await?;
 
     Ok(ApiResponse::<()>::success(
-        Some(format!("Your profile has been successfully updated.")),
+        Some(format!("Your profile have successfully updated.")),
         None
     ).into())
 }

@@ -2,7 +2,6 @@ use crate::{domain::entities::user::User, application::common::types::AppResult}
 use async_trait::async_trait;
 use serde::{Serialize, Deserialize};
 
-//TODO: add exp time to it
 #[derive(Debug, Serialize, Deserialize)]
 pub struct JwtPayload {
     pub user_id: u32,

@@ -75,12 +75,11 @@ where
                 )
                 .await;
 
-                let creaetd_user = self.user_repository.create(&new_user).await?;
-
-                let access_token = self.jwt_token_handler.generate_token(&new_user).await;
+                let created_user = self.user_repository.create(&new_user).await?;
+                let access_token = self.jwt_token_handler.generate_token(&created_user).await;
 
                 Ok(AuthenticatedUserOutput {
-                    user: creaetd_user,
+                    user: created_user,
                     access_token,
                 })
             }
