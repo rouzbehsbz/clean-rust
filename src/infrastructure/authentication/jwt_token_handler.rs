@@ -1,8 +1,7 @@
 use crate::{
     application::common::interfaces::authentication::jwt_token_handler::{IJwtTokenHandler, JwtPayload},
-    domain::entities::user::User, common::{types::AppResult, errors::Error, config::AuthenticationConfig}, infrastructure::common::date_service::DateService,
+    domain::entities::user::User, application::common::{types::AppResult, errors::Error}, infrastructure::common::date_service::DateService, config::AuthenticationConfig,
 };
-use actix_web::cookie::time::Date;
 use async_trait::async_trait;
 use jsonwebtoken::{encode, decode, DecodingKey, EncodingKey, Header, Validation, Algorithm};
 

@@ -2,7 +2,7 @@ use std::future::{Ready, ready};
 
 use actix_web::{FromRequest, HttpRequest, dev::Payload, http, HttpMessage};
 
-use crate::{common::{errors::Error, types::AppResult}, infrastructure::authentication::jwt_token_handler::JwtTokenHandler, container::Container, application::common::interfaces::authentication::jwt_token_handler::{IJwtTokenHandler, JwtPayload}};
+use crate::{application::common::{errors::Error, types::AppResult}, infrastructure::authentication::jwt_token_handler::JwtTokenHandler, container::Container, application::common::interfaces::authentication::jwt_token_handler::{IJwtTokenHandler, JwtPayload}};
 
 pub struct AuthenticationMiddleware;
 

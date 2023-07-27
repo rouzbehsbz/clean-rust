@@ -1,4 +1,4 @@
-use crate::{common::types::AppResult, domain::entities::user::User};
+use crate::{application::common::types::AppResult, domain::entities::user::User};
 use async_trait::async_trait;
 
 #[async_trait]

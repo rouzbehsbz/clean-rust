@@ -7,6 +7,8 @@ use validator::{ValidationErrors, ValidationErrorsKind::Field};
 
 use crate::infrastructure::common::date_service::DateService;
 
+use super::api_response::ApiResponse;
+
 #[derive(Debug, ThisError)]
 pub enum Error {
     #[error("Oops! Something went wrong.")]
@@ -38,27 +40,23 @@ impl ResponseError for Error {
     fn error_response(&self) -> HttpResponse {
         let status_code = self.status_code();
         let message = self.to_string();
-        let timestamp = DateService::get_cuurent_timestamp();
 
         match self {
             Self::InputValidation(fields) => {
-                let error_response = ValidationErrorResponse {
-                    code: status_code.as_u16(),
-                    message,
-                    fields: fields.clone(),
-                    timestamp,
-                };
+                let result = fields.clone();
 
-                HttpResponse::build(status_code).json(error_response)
+                ApiResponse::error(
+                    status_code.as_u16(),
+                    Some(message),
+                    Some(result)
+                ).into()
             }
             _ => {
-                let error_response = CommonErrorResponse {
-                    code: status_code.as_u16(),
-                    message,
-                    timestamp,
-                };
-
-                HttpResponse::build(status_code).json(error_response)
+                ApiResponse::<()>::error(
+                    status_code.as_u16(),
+                    Some(message),
+                    None
+                ).into()
             }
         }
     }

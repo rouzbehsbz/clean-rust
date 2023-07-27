@@ -1,4 +1,4 @@
-use crate::{domain::entities::user::User, common::types::AppResult};
+use crate::{domain::entities::user::User, application::common::types::AppResult};
 use async_trait::async_trait;
 use serde::{Serialize, Deserialize};
 

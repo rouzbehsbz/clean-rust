@@ -1,6 +1,6 @@
 use crate::{
     application::common::interfaces::persistance::user_repository::IUserRepository,
-    common::types::AppResult, domain::entities::user::User,
+    application::common::types::AppResult, domain::entities::user::User,
     infrastructure::persistance::memory::Memory,
 };
 use async_trait::async_trait;

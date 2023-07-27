@@ -1,4 +1,4 @@
-use actix_web::{web::{Data, Json, Path}, HttpRequest, HttpMessage, http};
+use actix_web::{web::{Data, Json, Path}, HttpRequest, HttpMessage, http, HttpResponse};
 use validator::Validate;
 
 use crate::{
@@ -6,7 +6,7 @@ use crate::{
         dto::{UserLoginInput, UserRegisterInput, UpdateUserPofileInput, GetProfileInput},
         interface::IUserService,
     }, common::interfaces::authentication::jwt_token_handler::JwtPayload},
-    common::types::AppResult, presentation::middlewares::authentication::AuthenticationMiddleware,
+    application::common::{types::AppResult, api_response::ApiResponse}, presentation::middlewares::authentication::AuthenticationMiddleware,
 };
 
 use super::dto::{AuthenticatedUserResponse, UserLoginRequest, UserRegisterRequest, UpdateProfileRequest, UpdateProfileResponse, GetUserProfileResponse, GetUserProfileParams};
@@ -17,7 +17,7 @@ use super::dto::{AuthenticatedUserResponse, UserLoginRequest, UserRegisterReques
 pub async fn register(
     user_service: Data<dyn IUserService>,
     payload: Json<UserRegisterRequest>,
-) -> AppResult<Json<AuthenticatedUserResponse>> {
+) -> AppResult<HttpResponse> {
     payload.validate()?;
 
     let result = user_service
@@ -29,19 +29,24 @@ pub async fn register(
         })
         .await?;
 
-    Ok(Json(AuthenticatedUserResponse {
+    let response_result = AuthenticatedUserResponse {
         id: result.user.id,
         first_name: result.user.first_name,
         last_name: result.user.last_name,
         email: result.user.email,
         access_token: result.access_token,
-    }))
+    };
+
+    Ok(ApiResponse::success(
+        Some(format!("You have successfully registered.")),
+        Some(response_result)
+    ).into())
 }
 
 pub async fn login(
     user_service: Data<dyn IUserService>,
     payload: Json<UserLoginRequest>,
-) -> AppResult<Json<AuthenticatedUserResponse>> {
+) -> AppResult<HttpResponse> {
     payload.validate()?;
 
     let result = user_service
@@ -51,13 +56,18 @@ pub async fn login(
         })
         .await?;
 
-    Ok(Json(AuthenticatedUserResponse {
+    let response_result = AuthenticatedUserResponse {
         id: result.user.id,
         first_name: result.user.first_name,
         last_name: result.user.last_name,
         email: result.user.email,
         access_token: result.access_token,
-    }))
+    };
+
+    Ok(ApiResponse::success(
+        Some(format!("You have successfully logged in.")),
+        Some(response_result)
+    ).into())
 }
 
 pub async fn update_profile(
@@ -65,7 +75,7 @@ pub async fn update_profile(
     user_service: Data<dyn IUserService>,
     payload: Json<UpdateProfileRequest>,
     req: HttpRequest,
-) -> AppResult<Json<UpdateProfileResponse>> {
+) -> AppResult<HttpResponse> {
     payload.validate()?;
 
     let user_id = req.extensions().get::<JwtPayload>().unwrap().user_id;
@@ -78,22 +88,30 @@ pub async fn update_profile(
         password: payload.password.clone()
     }).await?;
 
-    Ok(Json(UpdateProfileResponse { message: format!("Your profile has been updated successfully.")}))
+    Ok(ApiResponse::<()>::success(
+        Some(format!("Your profile has been successfully updated.")),
+        None
+    ).into())
 }
 
 pub async fn get_profile(
     user_service: Data<dyn IUserService>,
     params: Path<GetUserProfileParams>
-) -> AppResult<Json<GetUserProfileResponse>> {
+) -> AppResult<HttpResponse> {
     params.validate()?;
 
     let result = user_service.get_profile(&GetProfileInput {
         id: params.user_id
     }).await?;
 
-    Ok(Json(GetUserProfileResponse { 
+    let response_result = GetUserProfileResponse { 
         first_name: result.first_name,
         last_name: result.last_name,
         email: result.email
-    }))
+    };
+
+    Ok(ApiResponse::success(
+        None,
+        Some(response_result)
+    ).into())
 }

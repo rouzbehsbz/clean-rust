@@ -1,4 +1,4 @@
-use crate::common::types::AppResult;
+use crate::application::common::types::AppResult;
 use async_trait::async_trait;
 
 use super::dto::{

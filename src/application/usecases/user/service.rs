@@ -7,7 +7,7 @@ use crate::{
         authentication::jwt_token_handler::IJwtTokenHandler,
         persistance::user_repository::IUserRepository,
     },
-    common::{errors::Error, types::AppResult},
+    application::common::{errors::Error, types::AppResult},
     domain::entities::user::User,
 };
 use async_trait::async_trait;
