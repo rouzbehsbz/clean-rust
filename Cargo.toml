@@ -3,8 +3,6 @@ name = "clean-rust"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 actix-web = "4.3.1"
 async-trait = "0.1.71"
@@ -12,6 +10,7 @@ bcrypt = "0.15.0"
 env_logger = "0.10.0"
 jsonwebtoken = "8.3.0"
 serde = {version = "1.0.171", features = ["derive"]}
+sqlx = {version = "0.7.1", features = ["runtime-tokio-rustls", "sqlx-postgres", "postgres", "macros"]}
 thiserror = "1.0.43"
 tokio = {version = "1.29.1", features = ["full"]}
 validator = {version = "0.16.1", features = ["derive"]}
