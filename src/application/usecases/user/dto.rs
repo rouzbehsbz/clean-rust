@@ -24,7 +24,7 @@ pub struct AuthenticatedUserOutput {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateUserPofileInput {
-    pub id: u32,
+    pub id: i32,
     pub email: Option<String>,
     pub first_name: Option<String>,
     pub last_name: Option<String>,
@@ -33,7 +33,7 @@ pub struct UpdateUserPofileInput {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GetProfileInput {
-    pub id: u32
+    pub id: i32
 }
 
 #[derive(Debug, Serialize, Deserialize)]

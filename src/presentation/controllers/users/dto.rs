@@ -80,7 +80,7 @@ pub struct GetUserProfileParams {
         max = 9999999,
         message = "User ID is not valid. please enter a valid number."
     ))]
-    pub user_id: u32
+    pub user_id: i32
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -90,7 +90,7 @@ pub struct UpdateProfileResponse {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AuthenticatedUserResponse {
-    pub id: u32,
+    pub id: i32,
     pub first_name: String,
     pub last_name: String,
     pub email: String,

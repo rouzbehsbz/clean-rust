@@ -9,7 +9,7 @@ use super::routes::routes;
 //TODO: better error result
 pub async fn run() -> Result<()> {
     //TODO: better container implemention
-    let container = Container::new();
+    let container = Container::new().await;
 
     let user_service: Arc<dyn IUserService> = Arc::new(container.user_service);
     let user_service_data: Data<dyn IUserService> = Data::from(user_service);

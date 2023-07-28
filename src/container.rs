@@ -2,17 +2,18 @@ use crate::{
     application::usecases::user::service::UserService,
     infrastructure::{
         authentication::jwt_token_handler::JwtTokenHandler,
-        persistance::memory::models::user::UserModel,
+        persistance::postgres::{repositories::user::UserRepository, PostgresDatabase},
     },
 };
 
 pub struct Container {
-    pub user_service: UserService<JwtTokenHandler, UserModel>,
+    pub user_service: UserService<JwtTokenHandler, UserRepository>,
 }
 
 impl Container {
-    pub fn new() -> Self {
-        let user_repository = UserModel::new();
+    pub async fn new() -> Self {
+        let postgres_database = PostgresDatabase::new().await;
+        let user_repository = UserRepository::new(postgres_database.clone());
         let jwt_token_handler = JwtTokenHandler::new();
         let user_service = UserService::new(jwt_token_handler, user_repository);
 

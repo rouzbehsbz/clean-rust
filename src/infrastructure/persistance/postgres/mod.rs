@@ -1,23 +1,27 @@
 use sqlx::{Pool, postgres, postgres::PgPoolOptions, Postgres};
 
-pub mod models;
+use crate::config::PostgresConfig;
 
+pub mod repositories;
+
+//TODO: is cloning ok for passing to multiple instances ?
+#[derive(Clone)]
 pub struct PostgresDatabase {
-    connection_string: String,
     pool: Pool<Postgres>
 }
 
 //TODO: implement better error handling
 impl PostgresDatabase {
-    pub async fn new(connection_string: &str) -> Self {
+    pub async fn new() -> Self {
+        let connection_string = PostgresConfig::connection_string();
+
         let pool = PgPoolOptions::new()
             .max_connections(4)
-            .connect(connection_string)
+            .connect(&connection_string)
             .await
             .unwrap();
         
         Self {
-            connection_string: connection_string.to_string(),
             pool
         }
     }

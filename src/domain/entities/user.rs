@@ -1,10 +1,11 @@
 use bcrypt::{hash, verify};
 use serde::{Deserialize, Serialize};
 use tokio::task;
+use sqlx::FromRow;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
-    pub id: u32,
+    pub id: i32,
     pub first_name: String,
     pub last_name: String,
     pub email: String,
@@ -26,7 +27,7 @@ impl User {
         user
     }
 
-    pub fn set_id(&mut self, id: u32) {
+    pub fn set_id(&mut self, id: i32) {
         self.id = id;
     }
 

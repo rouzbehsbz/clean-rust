@@ -6,12 +6,12 @@ use crate::{
 use async_trait::async_trait;
 use tokio::sync::Mutex;
 
-pub struct UserModel {
-    id_counter: Mutex<u32>,
-    source: Memory<u32, User>,
+pub struct UserRepository {
+    id_counter: Mutex<i32>,
+    source: Memory<i32, User>,
 }
 
-impl UserModel {
+impl UserRepository {
     pub fn new() -> Self {
         Self {
             id_counter: Mutex::new(0),
@@ -21,7 +21,7 @@ impl UserModel {
 }
 
 #[async_trait]
-impl IUserRepository for UserModel {
+impl IUserRepository for UserRepository {
     async fn create(&self, user: &User) -> AppResult<User> {
         let mut counter = self.id_counter.lock().await;
         let mut owned_user = user.clone();
@@ -47,7 +47,7 @@ impl IUserRepository for UserModel {
         Ok(None)
     }
 
-    async fn find_by_id(&self, id: u32) -> AppResult<Option<User>> {
+    async fn find_by_id(&self, id: i32) -> AppResult<Option<User>> {
         let found_user = self.source.get(&id).await;
 
         match found_user {
@@ -56,7 +56,7 @@ impl IUserRepository for UserModel {
         }
     }
 
-    async fn update(&self, id: u32, updated_user: &User) -> AppResult<Option<User>> {
+    async fn update(&self, id: i32, updated_user: &User) -> AppResult<Option<User>> {
         let found_user = self.source.get(&id).await;
 
         match found_user {
