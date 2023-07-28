@@ -37,9 +37,36 @@ impl IUserRepository for UserRepository {
         Ok(created_user)
     }
 
-    // TODO: implement update user method
     async fn update(&self, id: i32, updated_user: &User) -> AppResult<Option<User>> {
-        Ok(Some(updated_user.clone()))
+        let found_user = self.find_by_id(id).await?;
+
+        match found_user {
+            Some(_) => {
+                let updated_user = sqlx::query_as!(
+                    User,
+                    r#"
+                        UPDATE users SET
+                        first_name = $1,
+                        last_name = $2,
+                        email = $3,
+                        password = $4
+                        WHERE id = $5
+                        RETURNING id, first_name, last_name, email, password
+                    "#,
+                    &updated_user.first_name,
+                    &updated_user.last_name,
+                    &updated_user.email,
+                    &updated_user.password,
+                    id
+                )
+                .fetch_one(&self.source.pool)
+                .await
+                .unwrap();
+
+                Ok(Some(updated_user))
+            }
+            None => Ok(None)
+        }
     }
 
     async fn find_by_email(&self, email: &str) -> AppResult<Option<User>> {
