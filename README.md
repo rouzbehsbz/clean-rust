@@ -25,6 +25,7 @@ docker compose up
 - Mocking database interactions in tests using native in-memory mock service.
 - Unit tests.
 - Dcokerized.
+- HTTP requests input validations.
 
 ### To Do List
 - [ ] Add logger service
