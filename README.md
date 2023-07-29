@@ -24,7 +24,7 @@ docker compose up
 - Fully testable application and domain layer.
 - Mocking database interactions in tests using native in-memory mock service.
 - Unit tests.
-- Dcokerized.
+- Dockerized.
 - HTTP requests input validations.
 
 ### To Do List
