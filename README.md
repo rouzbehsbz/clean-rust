@@ -32,3 +32,4 @@ docker compose up
 - [ ] Add integration tests
 - [ ] Better error handling
 - [ ] Better optimiztions
+- [ ] Make automatic migrations
