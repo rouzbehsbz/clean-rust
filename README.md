@@ -1,5 +1,5 @@
 # Clean Rust
-My attempt to implement clean architecture with Rust.
+My attempt to implement clean architecture using Rust.
 
 ### Motivation
 The main goal of clean architecture is separation of concerns, which brings high testability and maintainability to the software. This project aims to implement the principles of this architecture in a web application written in the Rust language with use of Actix framework.
