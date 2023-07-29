@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: backend
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "80:${APP_PORT}"
