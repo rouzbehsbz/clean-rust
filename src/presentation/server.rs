@@ -2,7 +2,7 @@ use std::{io::Result, sync::Arc};
 
 use actix_web::{web::Data, App, HttpServer};
 
-use crate::{application::usecases::user::interface::IUserService, container::Container};
+use crate::{application::usecases::user::interface::IUserService, container::Container, config::HTTPServerConfig};
 
 use super::routes::routes;
 
@@ -20,8 +20,8 @@ pub async fn run() -> Result<()> {
             .configure(routes)
     });
 
-    //TODO: use config isntead of hardcoded ip address
-    server = server.bind("0.0.0.0:8080")?;
+    let address = HTTPServerConfig::address();
+    server = server.bind(address)?;
 
     server.run().await
 }

@@ -1,3 +1,4 @@
+use dotenv::dotenv;
 use presentation::server::run;
 
 mod __tests__;
@@ -10,5 +11,7 @@ mod config;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
+    
     run().await
 }

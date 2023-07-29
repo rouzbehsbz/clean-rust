@@ -1,41 +1,49 @@
+use std::env;
+
+pub struct HTTPServerConfig;
 pub struct AuthenticationConfig;
 pub struct PostgresConfig;
 
+impl HTTPServerConfig {
+    pub fn address() -> String {
+        format!(
+            "{}:{}",
+            Self::host(),
+            Self::port()
+        )
+    }
+
+    fn host() -> String {
+        let host = env::var("HTTP_HOST")
+            .unwrap_or("0.0.0.0".to_string());
+
+        host
+    }
+
+    fn port() -> u16 {
+        let port = env::var("HTTP_PORT")
+            .unwrap_or("3000".to_string())
+            .parse::<u16>()
+            .expect("HTTP port must be an integer.");
+
+        port
+    }
+}
+
 impl AuthenticationConfig {
     pub fn jwt_secret() -> String {
-        "myveryimportantsecret".to_string()
+        let jwt_secret = env::var("JWT_SECRET")
+            .unwrap_or("myveryimportantsecret".to_string());
+
+        jwt_secret
     }
 }
 
 impl PostgresConfig {
     pub fn connection_string() -> String {
-        format!(
-            "postgres://{}:{}@{}:{}/{}",
-            Self::username(),
-            Self::password(),
-            Self::host(),
-            Self::port(),
-            Self::db_name()
-        )
-    }
-
-    fn host() -> String {
-        "localhost".to_string()
-    }
-
-    fn port() -> u16 {
-        5432
-    }
-
-    fn db_name() -> String {
-        "clean-rust".to_string()
-    }
-
-    fn username() -> String {
-        "postgres".to_string()
-    }
-
-    fn password() -> String {
-        "test@123".to_string()
+        let connection_string = env::var("DATABASE_URL")
+            .unwrap_or("postgres://postgres:@localhost:5432/clean-rust".to_string());
+                
+        connection_string
     }
 }
