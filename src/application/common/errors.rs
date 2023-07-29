@@ -1,11 +1,10 @@
 use std::vec;
 
 use actix_web::{http::StatusCode, HttpResponse, ResponseError};
-use serde::Serialize;
+use serde::{Serialize};
 use thiserror::Error as ThisError;
 use validator::{ValidationErrors, ValidationErrorsKind::Field};
-
-use crate::infrastructure::common::date_service::DateService;
+use sqlx::Error as SqlxError;
 
 use super::api_response::ApiResponse;
 
@@ -23,6 +22,8 @@ pub enum Error {
     InputValidation(Vec<FieldError>),
     #[error("{0}")]
     AuthorizationFailed(String),
+    #[error("Database operation failed")]
+    DatabaseFailed
 }
 
 impl ResponseError for Error {
@@ -34,6 +35,7 @@ impl ResponseError for Error {
             Self::InputValidation(_) => StatusCode::CONFLICT,
             Self::EntityValidationFailed(_) => StatusCode::CONFLICT,
             Self::AuthorizationFailed(_) => StatusCode::UNAUTHORIZED,
+            Self::DatabaseFailed => StatusCode::INTERNAL_SERVER_ERROR
         }
     }
 
@@ -85,6 +87,12 @@ impl From<ValidationErrors> for Error {
         }
 
         Self::InputValidation(fields)
+    }
+}
+
+impl From<SqlxError> for Error {
+    fn from(_: SqlxError) -> Self {
+        Self::DatabaseFailed
     }
 }
 

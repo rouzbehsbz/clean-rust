@@ -14,7 +14,7 @@ impl UserRepository {
     }
 }
 
-//TODO: implement database errors handling
+
 #[async_trait]
 impl IUserRepository for UserRepository {
     async fn create(&self, user: &User) -> AppResult<User> {
@@ -31,8 +31,7 @@ impl IUserRepository for UserRepository {
             &user.password,
         )
         .fetch_one(&self.source.pool)
-        .await
-        .unwrap();
+        .await?;
 
         Ok(created_user)
     }
@@ -60,8 +59,7 @@ impl IUserRepository for UserRepository {
                     id
                 )
                 .fetch_one(&self.source.pool)
-                .await
-                .unwrap();
+                .await?;
 
                 Ok(Some(updated_user))
             }
@@ -78,8 +76,7 @@ impl IUserRepository for UserRepository {
             email
         )
         .fetch_optional(&self.source.pool)
-        .await
-        .unwrap();
+        .await?;
 
         Ok(found_user)
     }
@@ -93,8 +90,7 @@ impl IUserRepository for UserRepository {
             id
         )
         .fetch_optional(&self.source.pool)
-        .await
-        .unwrap();
+        .await?;
 
         Ok(found_user)
     }
