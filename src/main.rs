@@ -1,5 +1,6 @@
 use presentation::server::run;
 
+mod __tests__;
 mod application;
 mod container;
 mod domain;
